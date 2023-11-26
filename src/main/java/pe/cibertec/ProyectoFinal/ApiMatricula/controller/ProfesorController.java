@@ -1,6 +1,7 @@
 package pe.cibertec.ProyectoFinal.ApiMatricula.controller;
 
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import pe.cibertec.ProyectoFinal.ApiMatricula.restClient.ProfesorRestCliente;
 
 @RestController
 @RequestMapping("api/v1/profesor")
+@Slf4j
 
 public class ProfesorController {
 
@@ -23,8 +25,14 @@ public class ProfesorController {
 
     public ResponseEntity<List<Profesor>> findAllProfesor() {
 
-        return new ResponseEntity<>(profesorRestClient.findAllProfesor(), HttpStatus.OK);
-
+        try {
+            log.info("Endpoint: /api/v1/matricula/findAllProfesor - Buscando todos los profesores");
+            List<Profesor> profesores = profesorRestClient.findAllProfesor();
+            return new ResponseEntity<>(profesores, HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("Error al buscar todos los profesores: {}", e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }

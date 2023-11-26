@@ -1,6 +1,7 @@
 package pe.cibertec.ProyectoFinal.ApiMatricula.serviceImpl;
 
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pe.cibertec.ProyectoFinal.ApiMatricula.dao.MatriculaRepository;
@@ -22,6 +23,7 @@ import pe.cibertec.ProyectoFinal.ApiMatricula.restClient.SedeRestCliente;
 import pe.cibertec.ProyectoFinal.ApiMatricula.restClient.TurnoRestCliente;
 
 @Service
+@Slf4j
 
 public class MatriculaServiceImpl implements MatriculaService {
 
@@ -55,42 +57,49 @@ public class MatriculaServiceImpl implements MatriculaService {
 
     @Override
     public List<Matricula> findAll() {
+        log.info("Buscando todas las matrículas");
 
         return (List<Matricula>) matriculaRepository.findAll();
 
     }
 
     public List<Alumno> findAllAlumno() {
+        log.info("Buscando todos los alumnos");
 
         return (List<Alumno>) alumnoRestCliente.findAllAlumno();
 
     }
 
     public List<Carrera> findAllCarrera() {
+        log.info("Buscando todas las carreras");
 
         return (List<Carrera>) carreraRestCliente.findAllCarrera();
 
     }
 
     public List<Curso> findAllCurso() {
+        log.info("Buscando todos los cursos");
 
         return (List<Curso>) cursoRestCliente.findAllCurso();
 
     }
 
     public List<Profesor> findAllProfesor() {
+        log.info("Buscando todos los profesores");
 
         return (List<Profesor>) profesorRestCliente.findAllProfesor();
 
     }
 
     public List<Sede> findAllSede() {
+        log.info("Buscando todas las sedes");
 
         return (List<Sede>) sedeRestCliente.findAllSede();
 
     }
 
     public List<Turno> findAllTurno() {
+        log.info("Buscando todos los turnos");
 
         return (List<Turno>) turnoRestCliente.findAllTurno();
 
@@ -98,6 +107,7 @@ public class MatriculaServiceImpl implements MatriculaService {
 
     @Override
     public Matricula buscarPorId(Long id) {
+        log.info("Buscando matrícula por ID: {}", id);
 
         return matriculaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Matricula no encontrada con el id" + id.toString()));
 
@@ -105,6 +115,7 @@ public class MatriculaServiceImpl implements MatriculaService {
 
     @Override
     public MatriculaDTO findById(Long id) {
+        log.info("Buscando matrícula y detalles por ID: {}", id);
 
         Matricula matricula = matriculaRepository.findById(id).get();
 
@@ -133,6 +144,7 @@ public class MatriculaServiceImpl implements MatriculaService {
     @Override
     public Matricula agregarMatricula(Matricula matricula) {
 
+        log.info("Agregando nueva matrícula: {}", matricula);
         return matriculaRepository.save(matricula);
 
     }
@@ -140,6 +152,7 @@ public class MatriculaServiceImpl implements MatriculaService {
     @Override
     public Matricula actualizarMatricula(Matricula matricula) {
 
+        log.info("Actualizando matrícula con ID {}: {}", matricula.getId(), matricula);
         var MatriculaF = matriculaRepository.findById(matricula.getId()).get();
         MatriculaF.setFecha(matricula.getFecha());
         MatriculaF.setCodigoA(matricula.getCodigoA());
@@ -156,8 +169,8 @@ public class MatriculaServiceImpl implements MatriculaService {
     @Override
     public void eliminarMatricula(Long id) {
 
+        log.info("Eliminando matrícula con ID: {}", id);
         var MatriculaF = matriculaRepository.findById(id).get();
-
         matriculaRepository.delete(MatriculaF);
 
     }
